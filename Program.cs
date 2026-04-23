@@ -1,9 +1,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using ModelContextProtocol;
 using MS_SQL_MCP;
 
 var builder = Host.CreateApplicationBuilder(args);
+
+// MCP over stdio requires stdout to contain only protocol messages.
+// Disable default host logging providers to avoid corrupting the stream.
+builder.Logging.ClearProviders();
 
 // Get connection string from command line arguments
 string connectionString = args.Length > 0 ? args[0] : "";
